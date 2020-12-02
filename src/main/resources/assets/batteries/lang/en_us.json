@@ -1,5 +1,6 @@
 {
   "batteries": "Batteries Mod",
+  "itemGroup.batteries": "Batteries",
   "item.batteries.battery": "Basic Battery",
   "item.batteries.battery1": "Advanced Battery",
   "item.batteries.battery2": "Elite Battery",

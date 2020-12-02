@@ -1,3 +1,4 @@
+<p align="center"><img src=".github/assets/batteries.png" /></p>
 The Batteries Mod adds a few tiers of Battery items that the player can charge using Forge Energy (FE) that, when enabled and in the player's inventory, will provide power to other FE-based items automatically.
 
 Shift+Right-Click with a Battery in-hand to enable/disable. An enabled battery will have a glowing Enchantment effect to indicate it is ready to charge other items.
