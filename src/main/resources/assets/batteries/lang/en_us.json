@@ -7,6 +7,6 @@
   "item.batteries.battery3": "Ultimate Battery",
   "item.batteries.battery_creative": "Creative Battery",
   "item.batteries.example": "Example Energy Receiver",
-  "batteries.tooltip.battery.amount": "Energy (RF): %d / %d",
+  "batteries.tooltip.battery.amount": "Energy (FE): %d / %d",
   "batteries.tooltip.battery.enabled": "Enabled: %s"
 }
