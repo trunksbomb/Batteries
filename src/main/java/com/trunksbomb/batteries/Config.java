@@ -19,6 +19,8 @@ public class Config {
   public static ForgeConfigSpec.ConfigValue<Integer> BATTERY1_TRANSFER;
   public static ForgeConfigSpec.ConfigValue<Integer> BATTERY2_TRANSFER;
   public static ForgeConfigSpec.ConfigValue<Integer> BATTERY3_TRANSFER;
+
+  public static ForgeConfigSpec.ConfigValue<Boolean> FAIR_CHARGING;
   static {
     initConfig();
   }
@@ -33,6 +35,7 @@ public class Config {
     BATTERY1_TRANSFER = CONFIG.comment("Tier 1 Battery Transfer Rate").define("battery1_transfer", 300);
     BATTERY2_TRANSFER = CONFIG.comment("Tier 2 Battery Transfer Rate").define("battery2_transfer", 1000);
     BATTERY3_TRANSFER = CONFIG.comment("Tier 3 Battery Transfer Rate").define("battery3_transfer", 5000);
+    FAIR_CHARGING = CONFIG.comment("Enable \"Fair Charging\", meaning a battery will only charge an item if the item has less FE stored than the battery").define("fair_charging", true);
     CONFIG.pop();
     COMMON_CONFIG = CONFIG.build();
   }

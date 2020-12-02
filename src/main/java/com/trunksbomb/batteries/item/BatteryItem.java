@@ -80,9 +80,11 @@ public class BatteryItem extends Item {
         if (energyNeeded <= 0)
           return;
         if (tier != Tier.CREATIVE) {
-          int energyToTransfer = energyStorage.extractEnergy(energyNeeded, true);
-          int accepted = energy.receiveEnergy(energyToTransfer, false);
-          energyStorage.extractEnergy(accepted, false);
+          if (!Config.FAIR_CHARGING.get() || (Config.FAIR_CHARGING.get() && energyStorage.getEnergyStored() > energy.getEnergyStored())) {
+            int energyToTransfer = energyStorage.extractEnergy(energyNeeded, true);
+            int accepted = energy.receiveEnergy(energyToTransfer, false);
+            energyStorage.extractEnergy(accepted, false);
+          }
         }
         else {
           energy.receiveEnergy(energy.getMaxEnergyStored() - energy.getEnergyStored(), false);
