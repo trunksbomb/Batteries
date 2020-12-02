@@ -1,7 +1,9 @@
 # Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [Unreleased]
+## [1.0.1] - 2020-12-02
+### Fixed
+ - Batteries would always extract their max transfer rate, regardless of what the receiving item needed (even if it needed 0 energy).
 
 ## [1.0.0] - 2020-12-02
 ### Added

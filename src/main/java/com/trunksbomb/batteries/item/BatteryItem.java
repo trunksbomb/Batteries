@@ -1,5 +1,6 @@
 package com.trunksbomb.batteries.item;
 
+import com.trunksbomb.batteries.BatteriesMod;
 import com.trunksbomb.batteries.Config;
 import com.trunksbomb.batteries.capability.EnergyCapabilityProvider;
 import net.minecraft.client.util.ITooltipFlag;
@@ -33,7 +34,7 @@ public class BatteryItem extends Item {
   private Tier tier;
 
   public BatteryItem(Tier tier, Properties properties) {
-    super(properties);
+    super(properties.maxStackSize(1).setNoRepair());
     this.tier = tier;
   }
 
@@ -75,9 +76,13 @@ public class BatteryItem extends Item {
     IEnergyStorage energyStorage = battery.getCapability(CapabilityEnergy.ENERGY).orElse(null);
     if (!(receivingStack.getItem() instanceof BatteryItem)) {
       receivingStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> {
+        int energyNeeded = Math.min(energy.getMaxEnergyStored() - energy.getEnergyStored(), getMaxTransfer(battery));
+        if (energyNeeded <= 0)
+          return;
         if (tier != Tier.CREATIVE) {
-          int energyToTransfer = energyStorage.extractEnergy(getMaxTransfer(battery), false);
-          energy.receiveEnergy(energyToTransfer, false);
+          int energyToTransfer = energyStorage.extractEnergy(energyNeeded, true);
+          int accepted = energy.receiveEnergy(energyToTransfer, false);
+          energyStorage.extractEnergy(accepted, false);
         }
         else {
           energy.receiveEnergy(energy.getMaxEnergyStored() - energy.getEnergyStored(), false);
