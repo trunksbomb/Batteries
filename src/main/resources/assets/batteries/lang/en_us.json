@@ -1,0 +1,11 @@
+{
+  "batteries": "Batteries Mod",
+  "item.batteries.battery": "Basic Battery",
+  "item.batteries.battery1": "Advanced Battery",
+  "item.batteries.battery2": "Elite Battery",
+  "item.batteries.battery3": "Ultimate Battery",
+  "item.batteries.battery_creative": "Creative Battery",
+  "item.batteries.example": "Example Energy Receiver",
+  "batteries.tooltip.battery.amount": "Energy (RF): %d / %d",
+  "batteries.tooltip.battery.enabled": "Enabled: %s"
+}

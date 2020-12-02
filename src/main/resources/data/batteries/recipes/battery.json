@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rgr",
+    "bib",
+    "rgr"
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:redstone"
+    },
+    "g": {
+      "item": "minecraft:gold_ingot"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "b": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "item": "batteries:battery",
+    "count": 1
+  }
+}
