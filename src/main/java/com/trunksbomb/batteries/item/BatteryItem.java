@@ -47,9 +47,19 @@ public class BatteryItem extends Item {
   public void inventoryTick(ItemStack battery, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
     if (entityIn instanceof ServerPlayerEntity) {
       ServerPlayerEntity player = (ServerPlayerEntity) entityIn;
-
+      CompoundNBT nbt = battery.getOrCreateTag();
+      boolean shouldChargeSlot = false;
       for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-        provideEnergy(battery, player.inventory.getStackInSlot(i));
+        if (nbt.getBoolean("chargeHotbar") && (i == 40 || i < 9)) //40 is the offhand slot, 0-9 is hotbar
+          shouldChargeSlot = true;
+        else if (nbt.getBoolean("chargeInventory") && i >= 9 && i < 36) //9-35 is the main inventory
+          shouldChargeSlot = true;
+        else if (nbt.getBoolean("chargeArmor") && i >= 36 && i < 40) //36-39 is the armor slots
+          shouldChargeSlot = true;
+        else
+          shouldChargeSlot = false;
+        if (shouldChargeSlot)
+          provideEnergy(battery, player.inventory.getStackInSlot(i));
       }
     }
 
@@ -100,7 +110,7 @@ public class BatteryItem extends Item {
         if (energyNeeded <= 0)
           return;
         if (tier != Tier.CREATIVE) {
-          if (!Config.FAIR_CHARGING.get() || (Config.FAIR_CHARGING.get() && energyStorage.getEnergyStored() > energy.getEnergyStored())) {
+          if (!battery.getOrCreateTag().getBoolean("chargeFairly") || (battery.getOrCreateTag().getBoolean("chargeFairly") && energyStorage.getEnergyStored() > energy.getEnergyStored())) {
             int energyToTransfer = energyStorage.extractEnergy(energyNeeded, true);
             int accepted = energy.receiveEnergy(energyToTransfer, false);
             energyStorage.extractEnergy(accepted, false);
