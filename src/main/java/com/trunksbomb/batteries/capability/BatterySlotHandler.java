@@ -17,12 +17,4 @@ public class BatterySlotHandler extends SlotItemHandler {
   public boolean isItemValid(@Nonnull ItemStack stack) {
     return !(stack.getItem() instanceof BatteryItem) && stack.getCapability(CapabilityEnergy.ENERGY).isPresent();
   }
-
-  @Override
-  public void onSlotChange(@Nonnull ItemStack oldStackIn, @Nonnull ItemStack newStackIn) {
-    super.onSlotChange(oldStackIn, newStackIn);
-    if (getItemHandler() instanceof BatteryItemStackHandler) {
-      ((BatteryItemStackHandler) getItemHandler()).save();
-    }
-  }
 }

@@ -1,17 +1,14 @@
 package com.trunksbomb.batteries.capability;
 
 import com.trunksbomb.batteries.BatteriesMod;
-import com.trunksbomb.batteries.BatteryScreen;
 import com.trunksbomb.batteries.item.BatteryItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.SlotItemHandler;
 
 public class BatteryContainer extends Container {
 

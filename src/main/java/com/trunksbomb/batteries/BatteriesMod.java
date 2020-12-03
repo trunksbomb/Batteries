@@ -1,11 +1,12 @@
 package com.trunksbomb.batteries;
 
 import com.trunksbomb.batteries.capability.BatteryContainer;
+import com.trunksbomb.batteries.capability.BatteryScreen;
 import com.trunksbomb.batteries.item.BatteryItem;
 import com.trunksbomb.batteries.item.ExampleItem;
+import com.trunksbomb.batteries.network.GuiPacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScreenManager;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -85,6 +86,9 @@ public class BatteriesMod
     {
         // some preinit code
         ScreenManager.registerFactory(BATTERY_CONTAINER.get(), BatteryScreen::new);
+
+        //Network Registry
+        GuiPacketHandler.setup();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {

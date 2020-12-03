@@ -1,5 +1,6 @@
 package com.trunksbomb.batteries.capability;
 
+import com.trunksbomb.batteries.item.ExampleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -14,7 +15,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class BatteryCapabilityProvider implements ICapabilitySerializable {
+public class BatteryCapabilityProvider implements ICapabilitySerializable<CompoundNBT> {
 
   private ItemStack itemStack;
   private int energyCapacity;
@@ -35,26 +36,23 @@ public class BatteryCapabilityProvider implements ICapabilitySerializable {
   public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     if (cap == CapabilityEnergy.ENERGY)
       return energyCapability.cast();
-    else if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+    else if (!(itemStack.getItem() instanceof ExampleItem) && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
       return itemCapability.cast();
     return LazyOptional.empty();
   }
 
   @Override
-  public INBT serializeNBT() {
+  public CompoundNBT serializeNBT() {
     if (itemCapability.isPresent()) {
-      itemCapability.ifPresent(BatteryItemStackHandler::save);
       return itemCapability.resolve().get().serializeNBT();
     }
     return new CompoundNBT();
   }
 
   @Override
-  public void deserializeNBT(INBT nbt) {
-    if (itemCapability.isPresent()) {
-      System.out.println("Deserializing now");
-      System.out.println(nbt.toString());
-      itemCapability.ifPresent(BatteryItemStackHandler::load);
-    }
+  public void deserializeNBT(CompoundNBT nbt) {
+    itemCapability.ifPresent(h -> {
+      h.deserializeNBT(nbt);
+    });
   }
 }
