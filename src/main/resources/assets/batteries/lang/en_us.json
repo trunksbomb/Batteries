@@ -8,5 +8,12 @@
   "item.batteries.battery_creative": "Creative Battery",
   "item.batteries.example": "Example Energy Receiver",
   "batteries.tooltip.battery.amount": "Energy (FE): %d / %d",
-  "batteries.tooltip.battery.enabled": "Enabled: %s"
+  "batteries.tooltip.battery.enabled": "Enabled: %s",
+  "batteries.gui.name": "Battery",
+  "batteries.gui.button.whitelist": "Whitelist",
+  "batteries.gui.button.blacklist": "Blacklist",
+  "batteries.gui.button.armor": "Charge Worn Armor",
+  "batteries.gui.button.hotbar": "Charge Items on Hotbar",
+  "batteries.gui.button.inventory": "Charge Items in Inventory",
+  "batteries.gui.button.fair": "Charge items fairly"
 }

@@ -1,6 +1,6 @@
 package com.trunksbomb.batteries.item;
 
-import com.trunksbomb.batteries.capability.EnergyCapabilityProvider;
+import com.trunksbomb.batteries.capability.BatteryCapabilityProvider;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -35,7 +35,7 @@ public class ExampleItem extends Item {
   @Nullable
   @Override
   public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-    return new EnergyCapabilityProvider(stack, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+    return new BatteryCapabilityProvider(stack, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
   }
 
   @OnlyIn(Dist.CLIENT)

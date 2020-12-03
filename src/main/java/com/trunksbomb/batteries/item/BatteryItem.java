@@ -1,17 +1,21 @@
 package com.trunksbomb.batteries.item;
 
-import com.trunksbomb.batteries.BatteriesMod;
 import com.trunksbomb.batteries.Config;
-import com.trunksbomb.batteries.capability.EnergyCapabilityProvider;
+import com.trunksbomb.batteries.capability.BatteryContainerProvider;
+import com.trunksbomb.batteries.capability.BatteryCapabilityProvider;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -21,6 +25,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -56,6 +61,18 @@ public class BatteryItem extends Item {
   }
 
   @Override
+  public ActionResultType onItemUse(ItemUseContext context) {
+    World world = context.getWorld();
+    BlockPos pos = context.getPos();
+    ItemStack itemStack = context.getItem();
+    if (world.getBlockState(pos).getBlock() == Blocks.DIAMOND_BLOCK) {
+      itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> energy.receiveEnergy(Integer.MAX_VALUE, false));
+      return ActionResultType.SUCCESS;
+    }
+    return super.onItemUse(context);
+  }
+
+  @Override
   public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
     ItemStack itemStack = playerIn.getHeldItem(handIn);
     IEnergyStorage energyStorage = itemStack.getCapability(CapabilityEnergy.ENERGY).orElse(null);
@@ -65,6 +82,9 @@ public class BatteryItem extends Item {
         //TODO: Create a block for charging batteries -- until then, enable the next line to give energy on shift+right click
         //itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> energy.receiveEnergy(getMaxTransfer(itemStack), false));
         itemStack.getOrCreateTag().putBoolean("enabled", !currentlyEnabled);
+      }
+      else {
+        NetworkHooks.openGui((ServerPlayerEntity) playerIn, new BatteryContainerProvider(), playerIn.getPosition());
       }
     }
     return super.onItemRightClick(worldIn, playerIn, handIn);
@@ -132,7 +152,7 @@ public class BatteryItem extends Item {
           break;
       }
     }
-    return new EnergyCapabilityProvider(stack, startingEnergy, energyCapacity, energyTransfer);
+    return new BatteryCapabilityProvider(stack, startingEnergy, energyCapacity, energyTransfer);
   }
 
   @OnlyIn(Dist.CLIENT)
@@ -152,4 +172,6 @@ public class BatteryItem extends Item {
   private boolean isEnabled(ItemStack stack) {
     return stack.getOrCreateTag().getBoolean("enabled");
   }
+
+
 }

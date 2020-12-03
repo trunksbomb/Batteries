@@ -1,12 +1,17 @@
 package com.trunksbomb.batteries;
 
+import com.trunksbomb.batteries.capability.BatteryContainer;
 import com.trunksbomb.batteries.item.BatteryItem;
 import com.trunksbomb.batteries.item.ExampleItem;
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -34,6 +39,7 @@ public class BatteriesMod
 
     //Registries
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    private static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
 
     //Item Group (creative tab)
     public static ItemGroup itemGroup = new ItemGroup(BatteriesMod.MODID) {
@@ -51,6 +57,7 @@ public class BatteriesMod
     public static final RegistryObject<Item> BATTERY3 = ITEMS.register("battery3", () -> new BatteryItem(BatteryItem.Tier.THREE, new Item.Properties().group(itemGroup)));
     public static final RegistryObject<Item> BATTERY_CREATIVE = ITEMS.register("battery_creative", () -> new BatteryItem(BatteryItem.Tier.CREATIVE, new Item.Properties().group(itemGroup)));
     public static final RegistryObject<Item> EXAMPLE = ITEMS.register("example", () -> new ExampleItem(new Item.Properties().group(itemGroup)));
+    public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery_container", () -> IForgeContainerType.create(((windowId, inv, data) -> new BatteryContainer(windowId, inv, inv.player))));
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -69,13 +76,15 @@ public class BatteriesMod
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-        //Register Items
+        //Register everything
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     private void setup(final FMLCommonSetupEvent event)
     {
         // some preinit code
+        ScreenManager.registerFactory(BATTERY_CONTAINER.get(), BatteryScreen::new);
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
