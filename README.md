@@ -5,3 +5,5 @@ Shift+Right-Click with a Battery in-hand to enable/disable. An enabled battery w
 A Creative Battery is also available.
 
 Currently, the mod assumes that you have another method to charge batteries (probably the same method you used to charge whatever item it is that this battery will charge!). In the future, a standalone Charging machine will be implemented.
+
+By default, "fair charging" is enabled but this can be changed in config. The Fair Charging feature prevents a battery from charging items that have more energy in them than the battery currently does, so that one large-capacity item in your inventory won't suck up all of the battery's energy unless it actually needs it.
