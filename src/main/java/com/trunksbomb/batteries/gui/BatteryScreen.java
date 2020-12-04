@@ -1,7 +1,8 @@
-package com.trunksbomb.batteries.capability;
+package com.trunksbomb.batteries.gui;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.trunksbomb.batteries.BatteriesMod;
+import com.trunksbomb.batteries.container.BatteryContainer;
 import com.trunksbomb.batteries.network.GuiPacket;
 import com.trunksbomb.batteries.network.GuiPacketHandler;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -81,7 +82,6 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
     CompoundNBT nbt = this.container.battery.getOrCreateTag();
     font.drawString(matrixStack, this.container.battery.getDisplayName().getString(), 8, 8, 4210752);
-    this.container.battery.getCapability(CapabilityEnergy.ENERGY).ifPresent(e -> font.drawString(matrixStack, Integer.toString(e.getEnergyStored()), 90, 8, 4210752));
     for (Widget b : this.buttons) {
       if (b.isMouseOver(mouseX, mouseY))
         b.renderToolTip(matrixStack, mouseX - guiLeft, mouseY - guiTop);

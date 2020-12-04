@@ -2,7 +2,7 @@ package com.trunksbomb.batteries.item;
 
 import com.trunksbomb.batteries.Config;
 import com.trunksbomb.batteries.capability.BatteryCapabilityProvider;
-import com.trunksbomb.batteries.capability.BatteryContainerProvider;
+import com.trunksbomb.batteries.container.BatteryContainerProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -78,7 +78,7 @@ public class BatteryItem extends Item {
     World world = context.getWorld();
     BlockPos pos = context.getPos();
     ItemStack itemStack = context.getItem();
-    if (world.getBlockState(pos).getBlock() == Blocks.DIAMOND_BLOCK) {
+    if (Config.TEST_CHARGING.get() && world.getBlockState(pos).getBlock() == Blocks.DIAMOND_BLOCK) {
       itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> energy.receiveEnergy(Integer.MAX_VALUE, false));
       return ActionResultType.SUCCESS;
     }
@@ -92,8 +92,6 @@ public class BatteryItem extends Item {
     boolean currentlyEnabled = isEnabled(itemStack);
     if (!worldIn.isRemote && energyStorage != null) {
       if (playerIn.isCrouching()) {
-        //TODO: Create a block for charging batteries -- until then, enable the next line to give energy on shift+right click
-        //itemStack.getCapability(CapabilityEnergy.ENERGY).ifPresent(energy -> energy.receiveEnergy(getMaxTransfer(itemStack), false));
         itemStack.getOrCreateTag().putBoolean("enabled", !currentlyEnabled);
       }
       else {

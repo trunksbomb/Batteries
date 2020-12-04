@@ -1,7 +1,7 @@
 package com.trunksbomb.batteries;
 
-import com.trunksbomb.batteries.capability.BatteryContainer;
-import com.trunksbomb.batteries.capability.BatteryScreen;
+import com.trunksbomb.batteries.container.BatteryContainer;
+import com.trunksbomb.batteries.gui.BatteryScreen;
 import com.trunksbomb.batteries.item.BatteryItem;
 import com.trunksbomb.batteries.item.ExampleItem;
 import com.trunksbomb.batteries.network.GuiPacketHandler;

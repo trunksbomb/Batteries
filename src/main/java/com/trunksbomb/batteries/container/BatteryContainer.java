@@ -1,6 +1,7 @@
-package com.trunksbomb.batteries.capability;
+package com.trunksbomb.batteries.container;
 
 import com.trunksbomb.batteries.BatteriesMod;
+import com.trunksbomb.batteries.gui.BatteryScreen;
 import com.trunksbomb.batteries.inventory.BatterySlot;
 import com.trunksbomb.batteries.item.BatteryItem;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,7 +1,7 @@
 # Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [Unreleased] - 2020-12-02
+## [1.0.3] - 2020-12-03
 ### Added
  - Open GUI on right-click
    - 9 inventory slots available that accept energy-capable items. Items will not actually be placed in the battery's inventory -- a ghost item will appear instead
@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
    - 3 buttons to control where in your inventory items will be charged -- on the hotbar, worn armor, and items in the inventory (that aren't in the hotbar). Each option can be toggled individually and will show a green checkmark when enabled
    - The last button in the GUI toggles "Fair Charging", which is described in the 1.0.2 update in this changelog
  - Implemented behavior from the GUI buttons, so the battery will only charge the specified slots
+ - Added test_charging config option. When enabled, right-clicking on a diamond block while holding a battery will begin charging it.
 ### Changed
  - Inventory slots are now "ghost slots" and only hold a reference to the item placed in the battery.
  
