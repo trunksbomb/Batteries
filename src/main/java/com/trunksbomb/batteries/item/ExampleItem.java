@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ExampleItem extends Item {
   public ExampleItem(Properties properties) {
-    super(properties);
+    super(properties.maxStackSize(1).setNoRepair());
   }
 
   @Override

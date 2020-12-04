@@ -13,7 +13,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
 
 public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   public static final int WIDTH = 176;
@@ -60,7 +59,7 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
     armor = new Button(guiLeft + 16 + 3 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + 41, 3, true, new TranslationTextComponent("batteries.gui.button.armor"), (p) -> {
       nbt.putBoolean("chargeArmor", !nbt.getBoolean("chargeArmor"));
     });
-    fair = new Button(guiLeft + 16 + 4 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + 41, 5, true, new TranslationTextComponent("batteries.gui.button.armor"), (p) -> {
+    fair = new Button(guiLeft + 16 + 4 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + 41, 5, true, new TranslationTextComponent("batteries.gui.button.fair"), (p) -> {
       nbt.putBoolean("chargeFairly", !nbt.getBoolean("chargeFairly"));
     });
     this.addButton(whitelist);

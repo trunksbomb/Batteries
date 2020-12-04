@@ -1,8 +1,8 @@
 package com.trunksbomb.batteries.item;
 
 import com.trunksbomb.batteries.Config;
-import com.trunksbomb.batteries.capability.BatteryContainerProvider;
 import com.trunksbomb.batteries.capability.BatteryCapabilityProvider;
+import com.trunksbomb.batteries.capability.BatteryContainerProvider;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -26,9 +26,12 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BatteryItem extends Item {
 
@@ -109,6 +112,24 @@ public class BatteryItem extends Item {
         int energyNeeded = Math.min(energy.getMaxEnergyStored() - energy.getEnergyStored(), getMaxTransfer(battery));
         if (energyNeeded <= 0)
           return;
+        boolean whitelist = battery.getOrCreateTag().getBoolean("whitelist");
+        AtomicBoolean matchedWhitelist = new AtomicBoolean(false);
+        AtomicBoolean matchedBlacklist = new AtomicBoolean(false);
+        List<ItemStack> listItems = getStoredItems(battery);
+        listItems.forEach(itemStack -> {
+          boolean matched = receivingStack.getItem().getClass() == itemStack.getItem().getClass();
+          if (whitelist && matched) {
+            matchedWhitelist.set(true);
+          }
+          else if (!whitelist && matched)
+            matchedBlacklist.set(true);
+        });
+
+        if (whitelist && !matchedWhitelist.get() && listItems.size() > 0)
+          return; //If on a whitelist and the whitelist has at least one item, but we didn't match -- stop
+        if (!whitelist && matchedBlacklist.get() && listItems.size() > 0)
+          return; //If on a blacklist and the blacklist has at least one item, and we did match -- stop
+
         if (tier != Tier.CREATIVE) {
           if (!battery.getOrCreateTag().getBoolean("chargeFairly") || (battery.getOrCreateTag().getBoolean("chargeFairly") && energyStorage.getEnergyStored() > energy.getEnergyStored())) {
             int energyToTransfer = energyStorage.extractEnergy(energyNeeded, true);
@@ -183,5 +204,16 @@ public class BatteryItem extends Item {
     return stack.getOrCreateTag().getBoolean("enabled");
   }
 
+  private List<ItemStack> getStoredItems(ItemStack battery) {
+    ArrayList<ItemStack> itemList = new ArrayList<>();
+    battery.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
+      for (int i = 0; i < h.getSlots(); i++) {
+        ItemStack itemStack = h.getStackInSlot(i);
+        if (!itemStack.isEmpty())
+          itemList.add(itemStack);
+      }
+    });
+    return itemList;
+  }
 
 }

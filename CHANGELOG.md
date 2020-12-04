@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
    - If whitelisting is enabled for the battery, only items represented in its inventory will be charged. If blacklisting is enabled, the battery will charge all items except those represented in its inventory
    - 3 buttons to control where in your inventory items will be charged -- on the hotbar, worn armor, and items in the inventory (that aren't in the hotbar). Each option can be toggled individually and will show a green checkmark when enabled
    - The last button in the GUI toggles "Fair Charging", which is described in the 1.0.2 update in this changelog
+ - Implemented behavior from the GUI buttons, so the battery will only charge the specified slots
+### Changed
+ - Inventory slots are now "ghost slots" and only hold a reference to the item placed in the battery.
  
 ## [1.0.2] - 2020-12-02
 ### Changed

@@ -1,9 +1,9 @@
 package com.trunksbomb.batteries.capability;
 
+import com.trunksbomb.batteries.inventory.BatteryItemStackHandler;
 import com.trunksbomb.batteries.item.ExampleItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
