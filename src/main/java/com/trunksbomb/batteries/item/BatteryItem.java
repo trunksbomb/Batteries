@@ -115,7 +115,7 @@ public class BatteryItem extends Item {
         AtomicBoolean matchedBlacklist = new AtomicBoolean(false);
         List<ItemStack> listItems = getStoredItems(battery);
         listItems.forEach(itemStack -> {
-          boolean matched = receivingStack.getItem().getClass() == itemStack.getItem().getClass();
+          boolean matched = receivingStack.getItem().getRegistryName().equals(itemStack.getItem().getRegistryName());
           if (whitelist && matched) {
             matchedWhitelist.set(true);
           }
