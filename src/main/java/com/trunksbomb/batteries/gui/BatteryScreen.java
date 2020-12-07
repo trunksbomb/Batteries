@@ -19,7 +19,8 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   public static final int HEIGHT = 164;
   public static final int BUTTON_WIDTH = 20;
   public static final int BUTTON_HEIGHT = 18;
-  public static final int BUTTON_SCREEN_GAP = 7; //the gap between buttons when drawn on-screen
+  public static final int BUTTON_SCREEN_GAP_X = 7; //the gap between buttons when drawn on-screen
+  public static final int BUTTON_SCREEN_GAP_Y = 3;
   public static final int BUTTON_START_X = 48;
   public static final int BUTTON_START_Y = 39;
   public static final int INVENTORY_START_X = 32;
@@ -40,7 +41,7 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   public static final int PLUS_TEXTURE_Y = 170;
 
 
-  private Button whitelist, blacklist, hotbar, armor, inventory, fair;
+  private Button whitelist, blacklist, hotbar, armor, inventory, fair, machine;
   private static final ResourceLocation TEXTURE = new ResourceLocation(BatteriesMod.MODID, "textures/battery_gui.png");
 
   public BatteryScreen(BatteryContainer batteryContainer, PlayerInventory inv, ITextComponent titleIn) {
@@ -53,27 +54,30 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   protected void init() {
     super.init();
     CompoundNBT nbt = this.container.battery.getOrCreateTag();
-    whitelist = new Button(guiLeft + BUTTON_START_X, guiTop + BUTTON_START_Y, 0, nbt.getBoolean("whitelist"), new TranslationTextComponent("batteries.gui.button.whitelist"), (p) -> {
+    whitelist = createButton(0, 0, 0, true,"batteries.gui.button.whitelist", (p) -> {
       blacklist.visible = true;
       whitelist.visible = false;
       nbt.putBoolean("whitelist", false);
     });
-    blacklist = new Button(guiLeft + BUTTON_START_X, guiTop + BUTTON_START_Y, 1, !nbt.getBoolean("whitelist"), new TranslationTextComponent("batteries.gui.button.blacklist"), (p) -> {
+    blacklist = createButton(0, 0, 1, false, "batteries.gui.button.blacklist", (p) -> {
       blacklist.visible = false;
       whitelist.visible = true;
       nbt.putBoolean("whitelist", true);
     });
-    hotbar = new Button(guiLeft + BUTTON_START_X + (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + BUTTON_START_Y, 2, true, new TranslationTextComponent("batteries.gui.button.hotbar"), (p) -> {
+    hotbar = createButton(0, 1, 2, true, "batteries.gui.button.hotbar", (p) -> {
       nbt.putBoolean("chargeHotbar", !nbt.getBoolean("chargeHotbar"));
     });
-    inventory = new Button(guiLeft + BUTTON_START_X + 2 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + BUTTON_START_Y, 4, true, new TranslationTextComponent("batteries.gui.button.inventory"), (p) -> {
+    inventory = createButton(0, 2, 3, true, "batteries.gui.button.inventory", (p) -> {
       nbt.putBoolean("chargeInventory", !nbt.getBoolean("chargeInventory"));
     });
-    armor = new Button(guiLeft + BUTTON_START_X + 3 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + BUTTON_START_Y, 3, true, new TranslationTextComponent("batteries.gui.button.armor"), (p) -> {
+    armor = createButton(0, 3, 4, true, "batteries.gui.button.armor", (p) -> {
       nbt.putBoolean("chargeArmor", !nbt.getBoolean("chargeArmor"));
     });
-    fair = new Button(guiLeft + BUTTON_START_X + 4 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + BUTTON_START_Y, 5, true, new TranslationTextComponent("batteries.gui.button.fair"), (p) -> {
+    fair = createButton(0, 4, 5, true, "batteries.gui.button.fair", (p) -> {
       nbt.putBoolean("chargeFairly", !nbt.getBoolean("chargeFairly"));
+    });
+    machine = createButton(1, 0, 6, true, "batteries.gui.button.machine", (p) -> {
+      nbt.putBoolean("chargeMachine", !nbt.getBoolean("chargeMachine"));
     });
     this.addButton(whitelist);
     this.addButton(blacklist);
@@ -81,6 +85,11 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
     this.addButton(inventory);
     this.addButton(armor);
     this.addButton(fair);
+    this.addButton(machine);
+  }
+
+  private Button createButton(int rowIndex, int colIndex, int buttonIndex, boolean isVisible, String tooltipPath, net.minecraft.client.gui.widget.button.Button.IPressable pressable) {
+    return new Button(guiLeft + BUTTON_START_X + colIndex * (BUTTON_WIDTH + BUTTON_SCREEN_GAP_X), guiTop + BUTTON_START_Y + rowIndex * (BUTTON_HEIGHT + BUTTON_SCREEN_GAP_Y), buttonIndex, isVisible, new TranslationTextComponent(tooltipPath), pressable);
   }
 
   @Override
@@ -103,14 +112,17 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
           case 2: //hotbar
             drawCheck = nbt.getBoolean("chargeHotbar");
             break;
-          case 3: //armor
-            drawCheck = nbt.getBoolean("chargeArmor");
-            break;
-          case 4: //inventory
+          case 3: //inventory
             drawCheck = nbt.getBoolean("chargeInventory");
+            break;
+          case 4: //armor
+            drawCheck = nbt.getBoolean("chargeArmor");
             break;
           case 5: //fair
             drawCheck = nbt.getBoolean("chargeFairly");
+            break;
+          case 6: //machine
+            drawCheck = nbt.getBoolean("chargeMachine");
             break;
         }
         if (drawCheck) {
@@ -191,6 +203,9 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
           break;
         case 5: //fair
           nbtName = "chargeFairly";
+          break;
+        case 6: //fair
+          nbtName = "chargeMachine";
           break;
         default:
           nbtName = "";

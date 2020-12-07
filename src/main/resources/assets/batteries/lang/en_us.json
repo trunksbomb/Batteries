@@ -15,5 +15,6 @@
   "batteries.gui.button.armor": "Charge Worn Armor",
   "batteries.gui.button.hotbar": "Charge Items on Hotbar",
   "batteries.gui.button.inventory": "Charge Items in Inventory",
-  "batteries.gui.button.fair": "Charge items fairly"
+  "batteries.gui.button.fair": "Charge items fairly",
+  "batteries.gui.button.machine": "Charge nearby machines"
 }

@@ -48,9 +48,9 @@ public class BatteryItem extends Item {
 
   @Override
   public void inventoryTick(ItemStack battery, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+    CompoundNBT nbt = battery.getOrCreateTag();
     if (entityIn instanceof ServerPlayerEntity) {
       ServerPlayerEntity player = (ServerPlayerEntity) entityIn;
-      CompoundNBT nbt = battery.getOrCreateTag();
       boolean shouldChargeSlot = false;
       for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
         if (nbt.getBoolean("chargeHotbar") && (i == 40 || i < 9)) //40 is the offhand slot, 0-9 is hotbar
@@ -64,6 +64,9 @@ public class BatteryItem extends Item {
         if (shouldChargeSlot)
           provideEnergy(battery, player.inventory.getStackInSlot(i));
       }
+    }
+    if (nbt.getBoolean("chargeMachine")) {
+
     }
 
   }
