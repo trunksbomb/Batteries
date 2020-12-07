@@ -12,27 +12,39 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 public class BatteryScreen extends ContainerScreen<BatteryContainer> {
-  public static final int WIDTH = 176;
-  public static final int HEIGHT = 147;
+  public static final int WIDTH = 200;
+  public static final int HEIGHT = 164;
   public static final int BUTTON_WIDTH = 20;
   public static final int BUTTON_HEIGHT = 18;
-  public static final int BUTTON_OFFSET_X = 177;
-  public static final int BUTTON_OFFSET_Y = 0;
-  public static final int BUTTON_GAP = 1;
-  public static final int BUTTON_SCREEN_GAP = 7;
-  public static final int INVENTORY_START_X = 8;
+  public static final int BUTTON_SCREEN_GAP = 7; //the gap between buttons when drawn on-screen
+  public static final int BUTTON_START_X = 48;
+  public static final int BUTTON_START_Y = 39;
+  public static final int INVENTORY_START_X = 32;
   public static final int INVENTORY_START_Y = 19;
-  public static final int PLAYER_INVENTORY_START_Y = 65;
+  public static final int PLAYER_INVENTORY_START_Y = 82;
+  public static final int ARMOR_START_X = 7;
+  public static final int ARMOR_START_Y = 19;
+
+  //Texture Offsets
+  public static final int ARMOR_TEXTURE_X = 42;
+  public static final int ARMOR_TEXTURE_Y = 170;
+  public static final int BUTTON_TEXTURE_GAP = 1; //the gap between buttons in the GUI texture
+  public static final int BUTTON_TEXTURE_START_X = 201; //where the buttons start in the GUI texture
+  public static final int BUTTON_TEXTURE_START_Y = 0; //same, but for Y-axis
+  public static final int CHECK_TEXTURE_X = 25;
+  public static final int CHECK_TEXTURE_Y = 170;
+  public static final int PLUS_TEXTURE_X = 144;
+  public static final int PLUS_TEXTURE_Y = 170;
+
 
   private Button whitelist, blacklist, hotbar, armor, inventory, fair;
   private static final ResourceLocation TEXTURE = new ResourceLocation(BatteriesMod.MODID, "textures/battery_gui.png");
 
-  public BatteryScreen(BatteryContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
-    super(screenContainer, inv, titleIn);
+  public BatteryScreen(BatteryContainer batteryContainer, PlayerInventory inv, ITextComponent titleIn) {
+    super(batteryContainer, inv, titleIn);
     xSize = WIDTH;
     ySize = HEIGHT;
   }
@@ -41,26 +53,26 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   protected void init() {
     super.init();
     CompoundNBT nbt = this.container.battery.getOrCreateTag();
-    whitelist = new Button(guiLeft + 16, guiTop + 41, 0, nbt.getBoolean("whitelist"), new TranslationTextComponent("batteries.gui.button.whitelist"), (p) -> {
+    whitelist = new Button(guiLeft + BUTTON_START_X, guiTop + BUTTON_START_Y, 0, nbt.getBoolean("whitelist"), new TranslationTextComponent("batteries.gui.button.whitelist"), (p) -> {
       blacklist.visible = true;
       whitelist.visible = false;
       nbt.putBoolean("whitelist", false);
     });
-    blacklist = new Button(guiLeft + 16, guiTop + 41, 1, !nbt.getBoolean("whitelist"), new TranslationTextComponent("batteries.gui.button.blacklist"), (p) -> {
+    blacklist = new Button(guiLeft + BUTTON_START_X, guiTop + BUTTON_START_Y, 1, !nbt.getBoolean("whitelist"), new TranslationTextComponent("batteries.gui.button.blacklist"), (p) -> {
       blacklist.visible = false;
       whitelist.visible = true;
       nbt.putBoolean("whitelist", true);
     });
-    hotbar = new Button(guiLeft + 16 + (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + 41, 2, true, new TranslationTextComponent("batteries.gui.button.hotbar"), (p) -> {
+    hotbar = new Button(guiLeft + BUTTON_START_X + (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + BUTTON_START_Y, 2, true, new TranslationTextComponent("batteries.gui.button.hotbar"), (p) -> {
       nbt.putBoolean("chargeHotbar", !nbt.getBoolean("chargeHotbar"));
     });
-    inventory = new Button(guiLeft + 16 + 2 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + 41, 4, true, new TranslationTextComponent("batteries.gui.button.inventory"), (p) -> {
+    inventory = new Button(guiLeft + BUTTON_START_X + 2 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + BUTTON_START_Y, 4, true, new TranslationTextComponent("batteries.gui.button.inventory"), (p) -> {
       nbt.putBoolean("chargeInventory", !nbt.getBoolean("chargeInventory"));
     });
-    armor = new Button(guiLeft + 16 + 3 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + 41, 3, true, new TranslationTextComponent("batteries.gui.button.armor"), (p) -> {
+    armor = new Button(guiLeft + BUTTON_START_X + 3 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + BUTTON_START_Y, 3, true, new TranslationTextComponent("batteries.gui.button.armor"), (p) -> {
       nbt.putBoolean("chargeArmor", !nbt.getBoolean("chargeArmor"));
     });
-    fair = new Button(guiLeft + 16 + 4 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + 41, 5, true, new TranslationTextComponent("batteries.gui.button.fair"), (p) -> {
+    fair = new Button(guiLeft + BUTTON_START_X + 4 * (BUTTON_WIDTH + BUTTON_SCREEN_GAP), guiTop + BUTTON_START_Y, 5, true, new TranslationTextComponent("batteries.gui.button.fair"), (p) -> {
       nbt.putBoolean("chargeFairly", !nbt.getBoolean("chargeFairly"));
     });
     this.addButton(whitelist);
@@ -81,7 +93,7 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   @Override
   protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
     CompoundNBT nbt = this.container.battery.getOrCreateTag();
-    font.drawString(matrixStack, this.container.battery.getDisplayName().getString(), 8, 8, 4210752);
+    font.drawString(matrixStack, this.container.battery.getDisplayName().getString(), INVENTORY_START_X, 8, 4210752);
     for (Widget b : this.buttons) {
       if (b.isMouseOver(mouseX, mouseY))
         b.renderToolTip(matrixStack, mouseX - guiLeft, mouseY - guiTop);
@@ -103,10 +115,27 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
         }
         if (drawCheck) {
           getMinecraft().getTextureManager().bindTexture(TEXTURE);
-          this.blit(matrixStack, b.x - guiLeft, b.y - guiTop, 0, 147, b.getWidth(), b.getHeightRealms()); //not sure why it's named that.
+          this.blit(matrixStack, b.x - guiLeft + 4, b.y - guiTop + 4, CHECK_TEXTURE_X, CHECK_TEXTURE_Y, 16, 16);
         }
       }
     }
+    for (int slot = 0; slot < 9; slot++) { //draw plus slots
+      getMinecraft().getTextureManager().bindTexture(TEXTURE);
+      int screenX = INVENTORY_START_X + 18 * slot;
+      if (this.container.inventorySlots.get(slot).getStack().isEmpty())
+        this.blit(matrixStack, screenX, INVENTORY_START_Y, PLUS_TEXTURE_X, PLUS_TEXTURE_Y, 16, 16);
+    }
+    for (int armorIndex = 0; armorIndex < 4; armorIndex++) { //draw armor placeholders
+      int slot = 39 - armorIndex;
+      int screenX = ARMOR_START_X;
+      int screenY = ARMOR_START_Y + armorIndex * 18;
+      int textureX = ARMOR_TEXTURE_X + armorIndex * 17;
+      int textureY = ARMOR_TEXTURE_Y;
+      if (this.playerInventory.getStackInSlot(slot).isEmpty())
+        this.blit(matrixStack, screenX, screenY, textureX, textureY, 16, 16);
+    }
+    if (this.playerInventory.getStackInSlot(40).isEmpty())
+      this.blit(matrixStack, ARMOR_START_X, 91, 110, 170, 16, 16); //draw shield placeholder
   }
 
   @Override
@@ -130,9 +159,9 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
     public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
       if (!visible)
         return;
-      int offset = this.isMouseOver(mouseX, mouseY) ? BUTTON_WIDTH + BUTTON_GAP : 0;
-      this.blit(matrixStack, x, y, BUTTON_OFFSET_X + offset,
-              BUTTON_OFFSET_Y + index * (BUTTON_HEIGHT + BUTTON_GAP), BUTTON_WIDTH, BUTTON_HEIGHT);
+      int offset = this.isMouseOver(mouseX, mouseY) ? BUTTON_WIDTH + BUTTON_TEXTURE_GAP : 0;
+      this.blit(matrixStack, x, y, BUTTON_TEXTURE_START_X + offset,
+              BUTTON_TEXTURE_START_Y + index * (BUTTON_HEIGHT + BUTTON_TEXTURE_GAP), BUTTON_WIDTH, BUTTON_HEIGHT);
     }
 
     @Override
