@@ -77,4 +77,12 @@ public class Util {
     Vector3d sub = vec2.subtract(vec1);
     return 180 + Math.atan2(sub.getX(), sub.getZ()) / Math.PI * 180; //+180 normalizes from [-180 - 180] to [0 - 360]
   }
+
+  public static String abbreviateNumber(int number) {
+    if (number < 10000)
+      return String.format("%,d", number) + " FE";
+    if (number < 1000000)
+      return String.format("%,.2f", Math.round((float) number / 1000 * 100.0D) / 100.0D) + " kFE";
+    return String.format("%,.2f", Math.round((float) number / 1000000 * 100.0D) / 100.0D) + " MFE";
+  }
 }

@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Changed
  - Battery GUI now shows armor slots for easy access to chargeable armor
  - Added lightning bolts to Battery inventory slots to visually indicate that you should put chargeable items in it
+ - Batteries now use abbreviated FE units in their tooltip (10,000 FE = 10 kFE, etc)
 ## [1.0.4] - 2020-12-06
 ### Changed
  - Battery whitelist/blacklist now operates on the item's registry name instead of its class. This allows the battery to selectively charge items from mods that add multiple items that share the same base class.

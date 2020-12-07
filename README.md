@@ -11,6 +11,7 @@ Right-Click in the world with a battery in-hand to access its GUI (pictured abov
     - Charge Hotbar: Enable/disable charging of items in the hotbar
     - Charge Inventory: Enable/disable charging of items in the rest of the default inventory
     - Charge Armor: Enable/disable charging of worn armor
+    - Charge Nearby Machines: Enable/disable charging of energy-capable machines in a radius around the user. Respects sidedness of the machine, ie if the machine only takes energy from the front, you'll need to stand in front of it to charge it. Spawns particles to let you know it's working.
     - Charge Fairly: Enable/disable fair charging. When disabled, the battery will be drained without restriction to charge items in your inventory. When enabled, the battery will not charge an item that has more energy stored than it currently does. For example, a battery with 100,000 FE remaining will not charge an item that has 150,000 FE in it -- the intention is to prevent large-capacity and/or fast-draining items from sucking up all the battery power.
   
 Currently, the mod assumes that you have another method to charge batteries (probably the same method you used to charge whatever item it is that this battery will charge!). In the future, a standalone Charging machine will be implemented.

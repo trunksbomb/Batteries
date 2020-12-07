@@ -229,7 +229,7 @@ public class BatteryItem extends Item {
   public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
     super.addInformation(stack, worldIn, tooltip, flagIn);
     stack.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(energy -> {
-      tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.amount", String.format("%,d", energy.getEnergyStored()), String.format("%,d", energy.getMaxEnergyStored())).mergeStyle(TextFormatting.GREEN));
+      tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.amount", Util.abbreviateNumber(energy.getEnergyStored()), Util.abbreviateNumber(energy.getMaxEnergyStored())).mergeStyle(TextFormatting.GREEN));
     });
     tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.enabled", (isEnabled(stack) ?
             new TranslationTextComponent("batteries.tooltip.battery.yes") :
