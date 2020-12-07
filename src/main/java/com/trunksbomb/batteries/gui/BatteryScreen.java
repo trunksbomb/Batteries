@@ -54,29 +54,29 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   protected void init() {
     super.init();
     CompoundNBT nbt = this.container.battery.getOrCreateTag();
-    whitelist = createButton(0, 0, 0, true,"batteries.gui.button.whitelist", (p) -> {
+    whitelist = createButton(0, 1, 0, true,"batteries.gui.button.whitelist", (p) -> {
       blacklist.visible = true;
       whitelist.visible = false;
       nbt.putBoolean("whitelist", false);
     });
-    blacklist = createButton(0, 0, 1, false, "batteries.gui.button.blacklist", (p) -> {
+    blacklist = createButton(0, 1, 1, false, "batteries.gui.button.blacklist", (p) -> {
       blacklist.visible = false;
       whitelist.visible = true;
       nbt.putBoolean("whitelist", true);
     });
-    hotbar = createButton(0, 1, 2, true, "batteries.gui.button.hotbar", (p) -> {
+    hotbar = createButton(0, 2, 2, true, "batteries.gui.button.hotbar", (p) -> {
       nbt.putBoolean("chargeHotbar", !nbt.getBoolean("chargeHotbar"));
     });
-    inventory = createButton(0, 2, 3, true, "batteries.gui.button.inventory", (p) -> {
+    inventory = createButton(0, 3, 3, true, "batteries.gui.button.inventory", (p) -> {
       nbt.putBoolean("chargeInventory", !nbt.getBoolean("chargeInventory"));
     });
-    armor = createButton(0, 3, 4, true, "batteries.gui.button.armor", (p) -> {
+    armor = createButton(1, 1, 4, true, "batteries.gui.button.armor", (p) -> {
       nbt.putBoolean("chargeArmor", !nbt.getBoolean("chargeArmor"));
     });
-    fair = createButton(0, 4, 5, true, "batteries.gui.button.fair", (p) -> {
+    fair = createButton(1, 2, 5, true, "batteries.gui.button.fair", (p) -> {
       nbt.putBoolean("chargeFairly", !nbt.getBoolean("chargeFairly"));
     });
-    machine = createButton(1, 0, 6, true, "batteries.gui.button.machine", (p) -> {
+    machine = createButton(1, 3, 6, true, "batteries.gui.button.machine", (p) -> {
       nbt.putBoolean("chargeMachine", !nbt.getBoolean("chargeMachine"));
     });
     this.addButton(whitelist);
