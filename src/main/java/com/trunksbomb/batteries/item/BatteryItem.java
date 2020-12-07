@@ -194,7 +194,9 @@ public class BatteryItem extends Item {
     stack.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(energy -> {
       tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.amount", String.format("%,d", energy.getEnergyStored()), String.format("%,d", energy.getMaxEnergyStored())).mergeStyle(TextFormatting.GREEN));
     });
-    tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.enabled", (isEnabled(stack) ? "yes" : "no")));
+    tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.enabled", (isEnabled(stack) ?
+            new TranslationTextComponent("batteries.tooltip.battery.yes") :
+            new TranslationTextComponent("batteries.tooltip.battery.no"))));
   }
 
   private int getMaxTransfer(ItemStack stack) {

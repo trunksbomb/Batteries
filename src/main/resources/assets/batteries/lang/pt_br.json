@@ -1,0 +1,21 @@
+{
+  "batteries": "Batteries Mod",
+  "itemGroup.batteries": "Baterias",
+  "item.batteries.battery": "Bateria B\u00E1sica",
+  "item.batteries.battery1": "Bateria Avan\u00E7ada",
+  "item.batteries.battery2": "Bateria de Elite",
+  "item.batteries.battery3": "Bateria Ultimate",
+  "item.batteries.battery_creative": "Bateria Criativa",
+  "item.batteries.example": "Exemplo De Receptor De Energia",
+  "batteries.tooltip.battery.amount": "Carga (FE): %d / %d",
+  "batteries.tooltip.battery.enabled": "Habilitada: %s",
+  "batteries.tooltip.battery.yes": "Sim",
+  "batteries.tooltip.battery.no": "N\u00E3o",
+  "batteries.gui.name": "Bateria",
+  "batteries.gui.button.whitelist": "Lista Branca",
+  "batteries.gui.button.blacklist": "Lista Negra",
+  "batteries.gui.button.armor": "Carregar Armadura",
+  "batteries.gui.button.hotbar": "Carregar Itens Na Hotbar",
+  "batteries.gui.button.inventory": "Carregar Itens No Invent\u00E1rio",
+  "batteries.gui.button.fair": "Carregar Itens Igualmente"
+}
