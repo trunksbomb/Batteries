@@ -1,22 +1,30 @@
 package com.trunksbomb.batteries.container;
 
+import com.mojang.datafixers.util.Pair;
 import com.trunksbomb.batteries.BatteriesMod;
 import com.trunksbomb.batteries.gui.BatteryScreen;
 import com.trunksbomb.batteries.inventory.BatterySlot;
 import com.trunksbomb.batteries.item.BatteryItem;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.inventory.container.ClickType;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.PlayerContainer;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class BatteryContainer extends Container {
 
   public ItemStack battery;
-
   public int numSlots;
+
+  private static final EquipmentSlotType[] VALID_EQUIPMENT_SLOTS = new EquipmentSlotType[]{EquipmentSlotType.HEAD, EquipmentSlotType.CHEST, EquipmentSlotType.LEGS, EquipmentSlotType.FEET};
 
   public BatteryContainer(int windowId, PlayerInventory playerInventory, PlayerEntity player) {
     super(BatteriesMod.BATTERY_CONTAINER.get(), windowId);
@@ -44,6 +52,25 @@ public class BatteryContainer extends Container {
       int y = BatteryScreen.PLAYER_INVENTORY_START_Y + 58;
       this.addSlot(new Slot(playerInventory, col, x, y));
     }
+
+    for (int col = 39; col >= 36; col--) {
+      final EquipmentSlotType equipmentslottype = VALID_EQUIPMENT_SLOTS[-col+39];
+      int x = BatteryScreen.ARMOR_START_X;
+      int y = BatteryScreen.ARMOR_START_Y + (-col + 39) * 18;
+      this.addSlot(new Slot(playerInventory, col, x, y){
+        public int getSlotStackLimit() {
+          return 1;
+        }
+        public boolean isItemValid(ItemStack stack) {
+          return stack.canEquip(equipmentslottype, player);
+        }
+        public boolean canTakeStack(PlayerEntity playerIn) {
+          ItemStack itemstack = this.getStack();
+          return (itemstack.isEmpty() || playerIn.isCreative() || !EnchantmentHelper.hasBindingCurse(itemstack)) && super.canTakeStack(playerIn);
+        }
+      });
+    }
+    this.addSlot(new Slot(playerInventory, 40, BatteryScreen.ARMOR_START_X, 91));
   }
 
   @Override

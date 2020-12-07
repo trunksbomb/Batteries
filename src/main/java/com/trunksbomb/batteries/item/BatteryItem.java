@@ -2,8 +2,12 @@ package com.trunksbomb.batteries.item;
 
 import com.trunksbomb.batteries.Config;
 import com.trunksbomb.batteries.capability.BatteryCapabilityProvider;
+import com.trunksbomb.batteries.capability.BatteryEnergyStorage;
 import com.trunksbomb.batteries.container.BatteryContainerProvider;
+import com.trunksbomb.batteries.util.Util;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FurnaceBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,10 +16,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.particles.RedstoneParticleData;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -24,6 +33,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -31,6 +41,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BatteryItem extends Item {
@@ -48,10 +59,16 @@ public class BatteryItem extends Item {
 
   @Override
   public void inventoryTick(ItemStack battery, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+    CompoundNBT nbt = battery.getOrCreateTag();
+    if (!(battery.getItem() instanceof BatteryItem) ||
+            getStoredEnergy(battery) <= 0 ||
+            !isEnabled(battery) ||
+            !(entityIn instanceof PlayerEntity))
+      return;
+
     if (entityIn instanceof ServerPlayerEntity) {
       ServerPlayerEntity player = (ServerPlayerEntity) entityIn;
-      CompoundNBT nbt = battery.getOrCreateTag();
-      boolean shouldChargeSlot = false;
+      boolean shouldChargeSlot;
       for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
         if (nbt.getBoolean("chargeHotbar") && (i == 40 || i < 9)) //40 is the offhand slot, 0-9 is hotbar
           shouldChargeSlot = true;
@@ -64,6 +81,29 @@ public class BatteryItem extends Item {
         if (shouldChargeSlot)
           provideEnergy(battery, player.inventory.getStackInSlot(i));
       }
+    }
+    if (nbt.getBoolean("chargeMachine")) {
+      Set<BlockPos> shape = Util.getCuboidAroundPos(entityIn.getPosition(), 5, 3);
+      shape.forEach(blockPos -> {
+        TileEntity te = worldIn.getTileEntity(blockPos);
+        if (te != null) {
+          Direction facing = Util.getDirectionToPos(entityIn.getPositionVec(), Vector3d.copyCentered(new Vector3i(blockPos.getX(), blockPos.getY(), blockPos.getZ())));
+          te.getCapability(CapabilityEnergy.ENERGY, facing).ifPresent(e -> {
+            int energyNeeded = e.getMaxEnergyStored() - e.getEnergyStored();
+            if (energyNeeded > 0) {
+              int toSend = Math.min(this.getMaxTransfer(battery), energyNeeded);
+              int sentSimulated = e.receiveEnergy(toSend, true);
+              if (sentSimulated > 0) {
+                extractEnergy(battery, sentSimulated, false);
+                e.receiveEnergy(sentSimulated, false);
+                if (worldIn.isRemote && Math.random() < 0.05F) {
+                  Util.spawnParticlesFacingPlayer(worldIn, (PlayerEntity) entityIn, blockPos, 3);
+                }
+              }
+            }
+          });
+        }
+      });
     }
 
   }
@@ -191,7 +231,9 @@ public class BatteryItem extends Item {
     stack.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(energy -> {
       tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.amount", String.format("%,d", energy.getEnergyStored()), String.format("%,d", energy.getMaxEnergyStored())).mergeStyle(TextFormatting.GREEN));
     });
-    tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.enabled", (isEnabled(stack) ? "yes" : "no")));
+    tooltip.add(new TranslationTextComponent("batteries.tooltip.battery.enabled", (isEnabled(stack) ?
+            new TranslationTextComponent("batteries.tooltip.battery.yes") :
+            new TranslationTextComponent("batteries.tooltip.battery.no"))));
   }
 
   private int getMaxTransfer(ItemStack stack) {
@@ -200,6 +242,10 @@ public class BatteryItem extends Item {
 
   private boolean isEnabled(ItemStack stack) {
     return stack.getOrCreateTag().getBoolean("enabled");
+  }
+
+  private int getStoredEnergy(ItemStack stack) {
+    return getEnergyCapability(stack).getEnergyStored();
   }
 
   private List<ItemStack> getStoredItems(ItemStack battery) {
@@ -212,6 +258,15 @@ public class BatteryItem extends Item {
       }
     });
     return itemList;
+  }
+
+  private BatteryEnergyStorage getEnergyCapability(ItemStack battery) {
+    return (BatteryEnergyStorage) battery.getCapability(CapabilityEnergy.ENERGY).resolve().get();
+  }
+
+  private int extractEnergy(ItemStack battery, int amount, boolean simulate) {
+    BatteryEnergyStorage e = getEnergyCapability(battery);
+    return e.extractEnergy(amount, simulate);
   }
 
 }
