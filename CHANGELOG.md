@@ -1,7 +1,9 @@
 # Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [Unreleased]
+## [1.1.0] - 2020-12-07
+### Added
+ - New feature "Charge nearby machines" toggled in Battery GUI to charge energy-capable machines in a radius around the user. Respects sidedness of the machine, ie if the machine only takes energy from the front, you'll need to stand in front of it to charge it. Spawns particles to let you know it's working.
 ### Changed
  - Battery GUI now shows armor slots for easy access to chargeable armor
  - Added lightning bolts to Battery inventory slots to visually indicate that you should put chargeable items in it
