@@ -18,10 +18,7 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3i;
@@ -46,11 +43,26 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BatteryItem extends Item {
 
-  public enum Tier {
-    ZERO, ONE, TWO, THREE, CREATIVE
+  public enum Tier implements IStringSerializable {
+    NONE, ZERO, ONE, TWO, THREE, CREATIVE;
+
+    @Override
+    public String getString() {
+      if (this.name().equals(ZERO.name()))
+        return "basic";
+      else if (this.name().equals(ONE.name()))
+        return "advanced";
+      else if (this.name().equals(TWO.name()))
+        return "elite";
+      else if (this.name().equals(THREE.name()))
+        return "ultimate";
+      else if (this.name().equals(CREATIVE.name()))
+        return "creative";
+      return "none";
+    }
   };
 
-  private Tier tier;
+  private final Tier tier;
 
   public BatteryItem(Tier tier, Properties properties) {
     super(properties.maxStackSize(1).setNoRepair());
@@ -236,16 +248,17 @@ public class BatteryItem extends Item {
             new TranslationTextComponent("batteries.tooltip.battery.no"))));
   }
 
-  private int getMaxTransfer(ItemStack stack) {
+  public static int getMaxTransfer(ItemStack stack) {
     return stack.getOrCreateTag().getInt("transfer");
   }
 
-  private boolean isEnabled(ItemStack stack) {
+  public static boolean isEnabled(ItemStack stack) {
     return stack.getOrCreateTag().getBoolean("enabled");
   }
 
-  private int getStoredEnergy(ItemStack stack) {
-    return getEnergyCapability(stack).getEnergyStored();
+  public static int getStoredEnergy(ItemStack stack) {
+    BatteryEnergyStorage energy = getEnergyCapability(stack);
+    return energy != null ? energy.getEnergyStored() : 0;
   }
 
   private List<ItemStack> getStoredItems(ItemStack battery) {
@@ -260,13 +273,19 @@ public class BatteryItem extends Item {
     return itemList;
   }
 
-  private BatteryEnergyStorage getEnergyCapability(ItemStack battery) {
-    return (BatteryEnergyStorage) battery.getCapability(CapabilityEnergy.ENERGY).resolve().get();
+  @Nullable
+  public static BatteryEnergyStorage getEnergyCapability(ItemStack battery) {
+    IEnergyStorage energy = battery.getCapability(CapabilityEnergy.ENERGY).orElse(null);
+    return energy instanceof BatteryEnergyStorage ? (BatteryEnergyStorage) energy : null;
   }
 
   private int extractEnergy(ItemStack battery, int amount, boolean simulate) {
     BatteryEnergyStorage e = getEnergyCapability(battery);
     return e.extractEnergy(amount, simulate);
+  }
+
+  public Tier getTier() {
+    return this.tier;
   }
 
 }

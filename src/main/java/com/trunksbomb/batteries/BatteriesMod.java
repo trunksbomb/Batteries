@@ -1,16 +1,22 @@
 package com.trunksbomb.batteries;
 
+import com.trunksbomb.batteries.blocks.ChargerBlock;
+import com.trunksbomb.batteries.blocks.ChargerTile;
 import com.trunksbomb.batteries.container.BatteryContainer;
 import com.trunksbomb.batteries.gui.BatteryScreen;
 import com.trunksbomb.batteries.item.BatteryItem;
 import com.trunksbomb.batteries.item.ExampleItem;
 import com.trunksbomb.batteries.network.GuiPacketHandler;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
@@ -41,7 +47,8 @@ public class BatteriesMod
     //Registries
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, MODID);
-
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+    private static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, MODID);
     //Item Group (creative tab)
     public static ItemGroup itemGroup = new ItemGroup(BatteriesMod.MODID) {
 
@@ -58,6 +65,17 @@ public class BatteriesMod
     public static final RegistryObject<Item> BATTERY3 = ITEMS.register("battery3", () -> new BatteryItem(BatteryItem.Tier.THREE, new Item.Properties().group(itemGroup)));
     public static final RegistryObject<Item> BATTERY_CREATIVE = ITEMS.register("battery_creative", () -> new BatteryItem(BatteryItem.Tier.CREATIVE, new Item.Properties().group(itemGroup)));
     public static final RegistryObject<Item> EXAMPLE = ITEMS.register("example", () -> new ExampleItem(new Item.Properties().group(itemGroup)));
+
+    //Blocks
+    public static final RegistryObject<Block> CHARGER_BLOCk = BLOCKS.register("charger", () -> new ChargerBlock(Block.Properties.create(Material.ANVIL, MaterialColor.GRAY)));
+
+    //BlockItems
+    public static final RegistryObject<BlockItem> CHARGER_BLOCK_ITEM = ITEMS.register("charger", () -> new BlockItem(CHARGER_BLOCk.get(), new Item.Properties().group(itemGroup)));
+
+    //TileEntities
+    public static final RegistryObject<TileEntityType<ChargerTile>> CHARGER_TILE = TILES.register("charger", () -> TileEntityType.Builder.create(ChargerTile::new, CHARGER_BLOCk.get()).build(null));
+
+    //Container
     public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery_container", () -> IForgeContainerType.create(((windowId, inv, data) -> new BatteryContainer(windowId, inv, inv.player))));
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
@@ -79,6 +97,8 @@ public class BatteriesMod
 
         //Register everything
         ITEMS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
+        TILES.register(FMLJavaModLoadingContext.get().getModEventBus());
         CONTAINERS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 

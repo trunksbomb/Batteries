@@ -1,6 +1,9 @@
 # Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
+##[Unreleased]
+### Added
+ - New Charger block that accepts all tiers of batteries from this mod (none from other mods) on right-click. A Charger with a Battery in it will accept energy from other mods' pipes/cables/generators/etc to charge the Battery, and can also be used to output energy from the Battery to other mods pipes/cables/machines. Can also be charged by a battery in the player's inventory with the "Charge nearby machines" option enabled.
 ## [1.1.0] - 2020-12-07
 ### Added
  - New feature "Charge nearby machines" toggled in Battery GUI to charge energy-capable machines in a radius around the user. Respects sidedness of the machine, ie if the machine only takes energy from the front, you'll need to stand in front of it to charge it. Spawns particles to let you know it's working.

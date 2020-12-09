@@ -22,6 +22,7 @@ public class Config {
 
   public static ForgeConfigSpec.ConfigValue<Boolean> FAIR_CHARGING;
   public static ForgeConfigSpec.ConfigValue<Boolean> TEST_CHARGING;
+  public static ForgeConfigSpec.ConfigValue<Boolean> CREATIVE_CHARGERS;
   static {
     initConfig();
   }
@@ -37,6 +38,7 @@ public class Config {
     BATTERY2_TRANSFER = CONFIG.comment("Tier 2 Battery Transfer Rate").define("battery2_transfer", 1000);
     BATTERY3_TRANSFER = CONFIG.comment("Tier 3 Battery Transfer Rate").define("battery3_transfer", 5000);
     FAIR_CHARGING = CONFIG.comment("Enable \"Fair Charging\", meaning a battery will only charge an item if the item has less FE stored than the battery").define("fair_charging", true);
+    CREATIVE_CHARGERS = CONFIG.comment("Enable Charger blocks to generate their own energy from nothing to charge a contained battery. Useful for debugging or creative mode.").define("creative_chargers", false);
     TEST_CHARGING = CONFIG.comment("For debugging, enable right-click on diamond block to charge a held battery").define("test_charging", false);
     CONFIG.pop();
     COMMON_CONFIG = CONFIG.build();
