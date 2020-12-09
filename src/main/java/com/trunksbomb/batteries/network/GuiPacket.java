@@ -24,11 +24,13 @@ public class GuiPacket {
   public static void handle(GuiPacket message, Supplier<NetworkEvent.Context> context) {
     context.get().enqueueWork(() -> {
       ServerPlayerEntity player = context.get().getSender();
-      World world = player.getEntityWorld();
-      ItemStack itemStack = player.getHeldItemMainhand();
-      if (!(itemStack.getItem() instanceof BatteryItem))
-        itemStack = player.getHeldItemOffhand();
-      itemStack.getOrCreateTag().putBoolean(message.nbtName, message.nbtValue);
+      ItemStack itemStack = player != null ?
+              player.getHeldItemMainhand().getItem() instanceof BatteryItem ?
+                      player.getHeldItemMainhand() :
+                      player.getHeldItemOffhand() :
+              ItemStack.EMPTY;
+      if (itemStack.getItem() instanceof BatteryItem)
+        itemStack.getOrCreateTag().putBoolean(message.nbtName, message.nbtValue);
     });
     message.done(context);
   }
