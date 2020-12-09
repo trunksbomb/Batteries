@@ -5,9 +5,7 @@ import com.trunksbomb.batteries.capability.BatteryCapabilityProvider;
 import com.trunksbomb.batteries.capability.BatteryEnergyStorage;
 import com.trunksbomb.batteries.container.BatteryContainerProvider;
 import com.trunksbomb.batteries.util.Util;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.FurnaceBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +14,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -30,7 +27,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -102,8 +98,10 @@ public class BatteryItem extends Item {
           Direction facing = Util.getDirectionToPos(entityIn.getPositionVec(), Vector3d.copyCentered(new Vector3i(blockPos.getX(), blockPos.getY(), blockPos.getZ())));
           te.getCapability(CapabilityEnergy.ENERGY, facing).ifPresent(e -> {
             int energyNeeded = e.getMaxEnergyStored() - e.getEnergyStored();
+            if (Config.FAIR_CHARGING.get())
+              energyNeeded = e.getEnergyStored() < BatteryItem.getStoredEnergy(battery) ? energyNeeded : 0;
             if (energyNeeded > 0) {
-              int toSend = Math.min(this.getMaxTransfer(battery), energyNeeded);
+              int toSend = Math.min(getMaxTransfer(battery), energyNeeded);
               int sentSimulated = e.receiveEnergy(toSend, true);
               if (sentSimulated > 0) {
                 extractEnergy(battery, sentSimulated, false);
