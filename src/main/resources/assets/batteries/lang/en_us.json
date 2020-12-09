@@ -19,5 +19,5 @@
   "batteries.gui.button.inventory": "Charge Items in Inventory",
   "batteries.gui.button.fair": "Charge items fairly",
   "batteries.gui.button.machine": "Charge nearby machines",
-  "batteries.block.charger": "Battery Charger"
+  "block.batteries.charger": "Battery Charger"
 }
