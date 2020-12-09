@@ -1,7 +1,11 @@
 # Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-##[Unreleased]
+## [1.2.1] - 202-12-09
+### Fixed
+ - Added missing drop table to Charger so it will drop itself and any battery in it
+ - Added missing recipe for Charger
+## [1.2.0] - 2020-12-09
 ### Added
  - New Charger block that accepts all tiers of batteries from this mod (none from other mods) on right-click. A Charger with a Battery in it will accept energy from other mods' pipes/cables/generators/etc to charge the Battery, and can also be used to output energy from the Battery to other mods pipes/cables/machines. Can also be charged by a battery in the player's inventory with the "Charge nearby machines" option enabled.
  - Config option "Creative Chargers" allows Chargers to generate energy out of thin air to charge contained Batteries.

@@ -4,7 +4,9 @@ import com.trunksbomb.batteries.item.BatteryItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
@@ -18,6 +20,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 
@@ -58,6 +62,24 @@ public class ChargerBlock extends Block {
     }
 
     return super.onBlockActivated(state, world, pos, player, hand, hit);
+  }
+
+  @Override
+  public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    if (state.getBlock() != newState.getBlock()) {
+      TileEntity te = worldIn.getTileEntity(pos);
+      IItemHandler items = te != null ? te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null) : null;
+      if (items != null) {
+        for (int i = 0; i < items.getSlots(); i++) {
+          ItemStack stack = items.getStackInSlot(i);
+          if (!stack.isEmpty()) {
+            InventoryHelper.spawnItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
+          }
+        }
+      }
+    }
+
+    super.onReplaced(state, worldIn, pos, newState, isMoving);
   }
 
   @Override
