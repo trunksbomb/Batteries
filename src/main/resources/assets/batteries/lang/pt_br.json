@@ -17,5 +17,6 @@
   "batteries.gui.button.armor": "Carregar Armadura",
   "batteries.gui.button.hotbar": "Carregar Itens Na Hotbar",
   "batteries.gui.button.inventory": "Carregar Itens No Invent\u00E1rio",
-  "batteries.gui.button.fair": "Carregar Itens Igualmente"
+  "batteries.gui.button.fair": "Carregar Itens Igualmente",
+  "batteries.gui.button.machine": "Carregar M\u00E1quinas Pr\u00F3ximas"
 }

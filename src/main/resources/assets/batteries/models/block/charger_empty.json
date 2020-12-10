@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "batteries:blocks/charger/charger_top",
+    "down": "batteries:blocks/charger/charger_top",
+    "up": "batteries:blocks/charger/charger_top",
+    "north": "batteries:blocks/charger/charger_front",
+    "south": "batteries:blocks/charger/charger_front",
+    "west": "batteries:blocks/charger/charger_side",
+    "east": "batteries:blocks/charger/charger_side"
+  }
+}

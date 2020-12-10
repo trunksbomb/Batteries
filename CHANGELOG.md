@@ -1,10 +1,26 @@
 # Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [Unreleased]
+## [1.2.2] - 2012-12-09
+### Fixed
+ - Fixed missing translation string for Charger block
+## [1.2.1] - 2012-12-09
+### Fixed
+ - Added missing drop table to Charger so it will drop itself and any battery in it
+ - Added missing recipe for Charger
+## [1.2.0] - 2020-12-09
+### Added
+ - New Charger block that accepts all tiers of batteries from this mod (none from other mods) on right-click. A Charger with a Battery in it will accept energy from other mods' pipes/cables/generators/etc to charge the Battery, and can also be used to output energy from the Battery to other mods pipes/cables/machines. Can also be charged by a battery in the player's inventory with the "Charge nearby machines" option enabled.
+ - Config option "Creative Chargers" allows Chargers to generate energy out of thin air to charge contained Batteries.
+### Changed
+ - Option "Charge nearby machines" now respects option "Fair Charging" on the Battery, won't charge a machine that has more energy stored in it than the Battery.
+## [1.1.0] - 2020-12-07
+### Added
+ - New feature "Charge nearby machines" toggled in Battery GUI to charge energy-capable machines in a radius around the user. Respects sidedness of the machine, ie if the machine only takes energy from the front, you'll need to stand in front of it to charge it. Spawns particles to let you know it's working.
 ### Changed
  - Battery GUI now shows armor slots for easy access to chargeable armor
  - Added lightning bolts to Battery inventory slots to visually indicate that you should put chargeable items in it
+ - Batteries now use abbreviated FE units in their tooltip (10,000 FE = 10 kFE, etc)
 ## [1.0.4] - 2020-12-06
 ### Changed
  - Battery whitelist/blacklist now operates on the item's registry name instead of its class. This allows the battery to selectively charge items from mods that add multiple items that share the same base class.

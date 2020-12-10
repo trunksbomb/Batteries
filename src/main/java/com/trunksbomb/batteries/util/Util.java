@@ -31,16 +31,27 @@ public class Util {
     count = Math.max(1, count);
     Vector3d centeredSpawnVec = Vector3d.copyCentered(new Vector3i(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ()));
     Direction dir = getDirectionToPos(player.getPositionVec(), centeredSpawnVec).getOpposite();
-    Vector3d offset = new Vector3d(dir.getDirectionVec().getX(), dir.getDirectionVec().getY(), dir.getDirectionVec().getZ());
-    Vector3d finalSpawnVec = new Vector3d(centeredSpawnVec.getX(), centeredSpawnVec.getY(), centeredSpawnVec.getZ()).add(offset.mul(0.6d, 0.5d, 0.6d));
     Vector3d playerChestHeight = player.getPositionVec().add(0.0F, player.getHeight() * 0.75F, 0.0F);
+    spawnParticlesOnFace(world, spawnPos, dir, count);
     for (int i = 0; i < count; i++) {
-      Vector3d randomOffset = new Vector3d(0.3F - Math.random() * 0.6F, 0.3F - Math.random() * 0.6F, 0.3F - Math.random() * 0.6F);
-      Vector3d newFinalSpawnVec = finalSpawnVec.add(randomOffset.getX(), randomOffset.getY(), randomOffset.getZ());
       Vector3d shootVec = centeredSpawnVec.subtract(playerChestHeight).normalize();
-      world.addParticle(RedstoneParticleData.REDSTONE_DUST, newFinalSpawnVec.getX(), newFinalSpawnVec.getY(), newFinalSpawnVec.getZ(), 0.1F, 0.1F, 0.1F);
       world.addParticle(ParticleTypes.CRIT, playerChestHeight.getX(), playerChestHeight.getY(), playerChestHeight.getZ(), shootVec.getX() * shootVelocity, shootVec.getY() * shootVelocity, shootVec.getZ() * shootVelocity);
     }
+  }
+
+  public static void spawnParticlesOnFace(World world, BlockPos pos, Direction face, int count) {
+    Vector3d newFinalSpawnVec = getRandomOffsetOnFace(pos, face);
+    for (int i = 0; i < count; i++) {
+      world.addParticle(RedstoneParticleData.REDSTONE_DUST, newFinalSpawnVec.getX(), newFinalSpawnVec.getY(), newFinalSpawnVec.getZ(), 0.1F, 0.1F, 0.1F);
+    }
+  }
+
+  public static Vector3d getRandomOffsetOnFace(BlockPos pos, Direction face) {
+    Vector3d centeredSpawnVec = Vector3d.copyCentered(new Vector3i(pos.getX(), pos.getY(), pos.getZ()));
+    Vector3d offset = new Vector3d(face.getDirectionVec().getX(), face.getDirectionVec().getY(), face.getDirectionVec().getZ());
+    Vector3d finalSpawnVec = new Vector3d(centeredSpawnVec.getX(), centeredSpawnVec.getY(), centeredSpawnVec.getZ()).add(offset.mul(0.6d, 0.5d, 0.6d));
+    Vector3d randomOffset = new Vector3d(0.3F - Math.random() * 0.6F, 0.3F - Math.random() * 0.6F, 0.3F - Math.random() * 0.6F);
+    return finalSpawnVec.add(randomOffset.getX(), randomOffset.getY(), randomOffset.getZ());
   }
 
   /**
@@ -76,5 +87,13 @@ public class Util {
   public static double getHorizontalAngleToPos(Vector3d vec1, Vector3d vec2) {
     Vector3d sub = vec2.subtract(vec1);
     return 180 + Math.atan2(sub.getX(), sub.getZ()) / Math.PI * 180; //+180 normalizes from [-180 - 180] to [0 - 360]
+  }
+
+  public static String abbreviateNumber(int number) {
+    if (number < 10000)
+      return String.format("%,d", number) + " FE";
+    if (number < 1000000)
+      return String.format("%,.2f", Math.round((float) number / 1000 * 100.0D) / 100.0D) + " kFE";
+    return String.format("%,.2f", Math.round((float) number / 1000000 * 100.0D) / 100.0D) + " MFE";
   }
 }

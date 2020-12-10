@@ -54,12 +54,12 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
   protected void init() {
     super.init();
     CompoundNBT nbt = this.container.battery.getOrCreateTag();
-    whitelist = createButton(0, 1, 0, true,"batteries.gui.button.whitelist", (p) -> {
+    whitelist = createButton(0, 1, 0, nbt.getBoolean("whitelist"), "batteries.gui.button.whitelist", (p) -> {
       blacklist.visible = true;
       whitelist.visible = false;
       nbt.putBoolean("whitelist", false);
     });
-    blacklist = createButton(0, 1, 1, false, "batteries.gui.button.blacklist", (p) -> {
+    blacklist = createButton(0, 1, 1, !nbt.getBoolean("whitelist"), "batteries.gui.button.blacklist", (p) -> {
       blacklist.visible = false;
       whitelist.visible = true;
       nbt.putBoolean("whitelist", true);
@@ -195,11 +195,11 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
         case 2: //hotbar
           nbtName = "chargeHotbar";
           break;
-        case 3: //armor
-          nbtName = "chargeArmor";
-          break;
-        case 4: //inventory
+        case 3: //inventory
           nbtName = "chargeInventory";
+          break;
+        case 4: //armor
+          nbtName = "chargeArmor";
           break;
         case 5: //fair
           nbtName = "chargeFairly";

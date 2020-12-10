@@ -5,13 +5,13 @@ import net.minecraftforge.energy.EnergyStorage;
 
 public class BatteryEnergyStorage extends EnergyStorage {
 
-  private ItemStack itemStack;
+  private final ItemStack itemStack;
 
   public BatteryEnergyStorage(ItemStack itemStack, int energyCapacity, int energyTransfer) {
     super(energyCapacity, energyTransfer);
     this.itemStack = itemStack;
-    this.energy = itemStack.getOrCreateTag().contains("energy") ? itemStack.getTag().getInt("energy") : 0;
-    itemStack.getTag().putInt("transfer", energyTransfer);
+    this.energy = itemStack.getOrCreateTag().contains("energy") ? itemStack.getOrCreateTag().getInt("energy") : 0;
+    itemStack.getOrCreateTag().putInt("transfer", energyTransfer);
   }
 
   @Override
