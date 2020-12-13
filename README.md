@@ -16,3 +16,5 @@ Right-Click in the world with a battery in-hand to access its GUI (pictured abov
   
 Starting with v1.2.0, a new Charger block is available to charge your batteries. Insert a Battery into the Charger to use it as a stationary energy source for machines (not included) or to charge the battery. A Battery in a Charger can be charged from other mods' power generation/transfer methods, or by enabling the "Creative Charger" config option to allow the Charger to generate energy out of thin air!
 Batteries will charge any item that accepts Forge Energy.
+
+Starting with v1.3.0, a new tier of battery (Ender Battery) and a new block (Ender Battery Uplink) are available. The Ender Battery can be linked to an Ender Battery Uplink, and any energy received by the Uplink will be sent to the battery.
