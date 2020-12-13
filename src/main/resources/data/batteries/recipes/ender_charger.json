@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ede",
+    "ece",
+    "ede"
+  ],
+  "key": {
+    "e": {
+      "item": "minecraft:ender_pearl"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "c": {
+      "item": "batteries:charger"
+    }
+  },
+  "result": {
+    "item": "batteries:ender_charger",
+    "count": 1
+  }
+}

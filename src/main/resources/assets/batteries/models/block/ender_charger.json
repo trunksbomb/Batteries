@@ -1,0 +1,9 @@
+{
+  "parent": "batteries:block/charger_empty",
+  "textures": {
+    "north": "batteries:blocks/charger/charger_front",
+    "south": "batteries:blocks/charger/charger_front",
+    "up": "batteries:blocks/charger/ender_charger_top",
+    "down": "batteries:blocks/charger/ender_charger_top"
+  }
+}

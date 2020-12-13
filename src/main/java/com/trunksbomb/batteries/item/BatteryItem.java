@@ -40,20 +40,24 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class BatteryItem extends Item {
 
   public enum Tier implements IStringSerializable {
-    NONE, ZERO, ONE, TWO, THREE, CREATIVE;
+    NONE, ZERO, ONE, TWO, THREE, CREATIVE, ENDER;
 
     @Override
     public String getString() {
-      if (this.name().equals(ZERO.name()))
-        return "basic";
-      else if (this.name().equals(ONE.name()))
-        return "advanced";
-      else if (this.name().equals(TWO.name()))
-        return "elite";
-      else if (this.name().equals(THREE.name()))
-        return "ultimate";
-      else if (this.name().equals(CREATIVE.name()))
-        return "creative";
+      switch (this) {
+        case ZERO:
+          return "basic";
+        case ONE:
+          return "advanced";
+        case TWO:
+          return "elite";
+        case THREE:
+          return "ultimate";
+        case CREATIVE:
+          return "creative";
+        case ENDER:
+          return "ender";
+      }
       return "none";
     }
   };
@@ -223,6 +227,7 @@ public class BatteryItem extends Item {
           energyTransfer = Config.BATTERY2_TRANSFER.get();
           break;
         case THREE:
+        case ENDER:
           energyCapacity = Config.BATTERY3_CAPACITY.get();
           energyTransfer = Config.BATTERY3_TRANSFER.get();
           break;

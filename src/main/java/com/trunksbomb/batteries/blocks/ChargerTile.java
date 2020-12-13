@@ -6,6 +6,7 @@ import com.trunksbomb.batteries.capability.BatteryEnergyStorage;
 import com.trunksbomb.batteries.item.BatteryItem;
 import com.trunksbomb.batteries.util.Util;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -23,13 +24,19 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class ChargerTile extends TileEntity implements ITickableTileEntity {
 
+  public static final UUID DEFAULT_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
   private final LazyOptional<IItemHandler> inventory = LazyOptional.of(() -> new ItemStackHandler(1));
+  public UUID linkedBatteryUuid;
+  public UUID linkedPlayerUuid;
 
   public ChargerTile(TileEntityType<?> tileEntityTypeIn) {
     super(tileEntityTypeIn);
+    this.linkedBatteryUuid = DEFAULT_UUID;
+    this.linkedPlayerUuid = DEFAULT_UUID;
   }
 
   public ChargerTile() {
@@ -41,13 +48,33 @@ public class ChargerTile extends TileEntity implements ITickableTileEntity {
   public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
     if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
       return inventory.cast();
-    if (cap == CapabilityEnergy.ENERGY && getInventory() != null)
-      return getInventory().getStackInSlot(0).getCapability(cap);
+    if (cap == CapabilityEnergy.ENERGY) {
+      if (this.getBlockState().get(ChargerBlock.TYPE) != ChargerBlock.Type.ENDER && getInventory() != null)
+        return getInventory().getStackInSlot(0).getCapability(cap);
+      else if (world != null && this.getBlockState().get(ChargerBlock.TYPE) == ChargerBlock.Type.ENDER && !this.linkedBatteryUuid.equals(DEFAULT_UUID)) {
+        PlayerEntity player = world.getPlayerByUuid(this.linkedPlayerUuid);
+        if (player != null) {
+          for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+            ItemStack stack = player.inventory.getStackInSlot(i);
+            if (stack.getOrCreateTag().hasUniqueId("uuid") && stack.getOrCreateTag().getUniqueId("uuid").equals(this.linkedBatteryUuid)) {
+              System.out.printf("%s: Found battery %s%n", world.isRemote ? "Client" : "Server", stack.getOrCreateTag().getUniqueId("uuid"));
+              return stack.getCapability(cap);
+            }
+          }
+          System.out.printf("%s: Cannot find battery %s%n", world.isRemote ? "Client" : "Server", this.linkedBatteryUuid);
+        }
+        else
+          System.out.printf("Player was null%n");
+      }
+      else
+        System.out.printf("Invalid cap search.. %s and %s%n", this.linkedBatteryUuid, this.linkedPlayerUuid);
+    }
     return super.getCapability(cap, side);
   }
 
   public boolean hasBattery() {
-    return this.inventory.isPresent() && !this.inventory.resolve().get().getStackInSlot(0).isEmpty();
+    return (this.getBlockState().get(ChargerBlock.TYPE) == ChargerBlock.Type.ENDER && this.linkedBatteryUuid != DEFAULT_UUID) ||
+            (this.inventory.isPresent() && !this.inventory.resolve().get().getStackInSlot(0).isEmpty());
   }
 
   @Nullable
@@ -58,6 +85,7 @@ public class ChargerTile extends TileEntity implements ITickableTileEntity {
   public ItemStack getBattery() {
     return getInventory() != null ? getInventory().getStackInSlot(0) : ItemStack.EMPTY;
   }
+
   public ItemStack insertBattery(ItemStack battery, boolean simulate) {
     return battery.getItem() instanceof BatteryItem && getInventory() != null ? getInventory().insertItem(0, battery, simulate) : battery;
   }
@@ -92,6 +120,10 @@ public class ChargerTile extends TileEntity implements ITickableTileEntity {
   @Override
   public void read(BlockState bs, CompoundNBT tag) {
     inventory.ifPresent(h -> ((INBTSerializable<CompoundNBT>) h).deserializeNBT(tag.getCompound("inv")));
+    if (tag.hasUniqueId("battery_uuid"))
+      linkedBatteryUuid = tag.getUniqueId("battery_uuid");
+    if (tag.hasUniqueId("player_uuid"))
+      linkedPlayerUuid = tag.getUniqueId("player_uuid");
     super.read(bs, tag);
   }
 
@@ -101,6 +133,10 @@ public class ChargerTile extends TileEntity implements ITickableTileEntity {
       CompoundNBT compound = ((INBTSerializable<CompoundNBT>) h).serializeNBT();
       tag.put("inv", compound);
     });
+    tag.putUniqueId("battery_uuid", linkedBatteryUuid);
+    tag.putUniqueId("player_uuid", linkedPlayerUuid);
     return super.write(tag);
   }
+
+
 }

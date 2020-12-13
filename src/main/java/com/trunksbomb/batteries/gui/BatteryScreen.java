@@ -4,7 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.trunksbomb.batteries.BatteriesMod;
 import com.trunksbomb.batteries.container.BatteryContainer;
 import com.trunksbomb.batteries.network.GuiPacket;
-import com.trunksbomb.batteries.network.GuiPacketHandler;
+import com.trunksbomb.batteries.network.PacketHandler;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerInventory;
@@ -210,7 +210,7 @@ public class BatteryScreen extends ContainerScreen<BatteryContainer> {
         default:
           nbtName = "";
       }
-      GuiPacketHandler.INSTANCE.sendToServer(new GuiPacket(nbtName, BatteryScreen.this.container.battery.getOrCreateTag().getBoolean(nbtName)));
+      PacketHandler.INSTANCE.sendToServer(new GuiPacket(nbtName, BatteryScreen.this.container.battery.getOrCreateTag().getBoolean(nbtName)));
     }
   }
 }

@@ -6,7 +6,7 @@ import com.trunksbomb.batteries.container.BatteryContainer;
 import com.trunksbomb.batteries.gui.BatteryScreen;
 import com.trunksbomb.batteries.item.BatteryItem;
 import com.trunksbomb.batteries.item.ExampleItem;
-import com.trunksbomb.batteries.network.GuiPacketHandler;
+import com.trunksbomb.batteries.network.PacketHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
@@ -63,17 +63,20 @@ public class BatteriesMod
     public static final RegistryObject<Item> BATTERY1 = ITEMS.register("battery1", () -> new BatteryItem(BatteryItem.Tier.ONE, new Item.Properties().group(itemGroup)));
     public static final RegistryObject<Item> BATTERY2 = ITEMS.register("battery2", () -> new BatteryItem(BatteryItem.Tier.TWO, new Item.Properties().group(itemGroup)));
     public static final RegistryObject<Item> BATTERY3 = ITEMS.register("battery3", () -> new BatteryItem(BatteryItem.Tier.THREE, new Item.Properties().group(itemGroup)));
+    public static final RegistryObject<Item> BATTERY_ENDER = ITEMS.register("battery_ender", () -> new BatteryItem(BatteryItem.Tier.ENDER, new Item.Properties().group(itemGroup)));
     public static final RegistryObject<Item> BATTERY_CREATIVE = ITEMS.register("battery_creative", () -> new BatteryItem(BatteryItem.Tier.CREATIVE, new Item.Properties().group(itemGroup)));
     public static final RegistryObject<Item> EXAMPLE = ITEMS.register("example", () -> new ExampleItem(new Item.Properties().group(itemGroup)));
 
     //Blocks
-    public static final RegistryObject<Block> CHARGER_BLOCk = BLOCKS.register("charger", () -> new ChargerBlock(Block.Properties.create(Material.ANVIL, MaterialColor.GRAY)));
+    public static final RegistryObject<Block> CHARGER_BLOCK = BLOCKS.register("charger", () -> new ChargerBlock(Block.Properties.create(Material.ANVIL, MaterialColor.GRAY), ChargerBlock.Type.NORMAL));
+    public static final RegistryObject<Block> ENDER_CHARGER_BLOCK = BLOCKS.register("ender_charger", () -> new ChargerBlock(Block.Properties.create(Material.ANVIL, MaterialColor.GRAY), ChargerBlock.Type.ENDER));
 
     //BlockItems
-    public static final RegistryObject<BlockItem> CHARGER_BLOCK_ITEM = ITEMS.register("charger", () -> new BlockItem(CHARGER_BLOCk.get(), new Item.Properties().group(itemGroup)));
+    public static final RegistryObject<BlockItem> CHARGER_BLOCK_ITEM = ITEMS.register("charger", () -> new BlockItem(CHARGER_BLOCK.get(), new Item.Properties().group(itemGroup)));
+    public static final RegistryObject<BlockItem> ENDER_CHARGER_BLOCK_ITEM = ITEMS.register("ender_charger", () -> new BlockItem(ENDER_CHARGER_BLOCK.get(), new Item.Properties().group(itemGroup)));
 
     //TileEntities
-    public static final RegistryObject<TileEntityType<ChargerTile>> CHARGER_TILE = TILES.register("charger", () -> TileEntityType.Builder.create(ChargerTile::new, CHARGER_BLOCk.get()).build(null));
+    public static final RegistryObject<TileEntityType<ChargerTile>> CHARGER_TILE = TILES.register("charger", () -> TileEntityType.Builder.create(ChargerTile::new, CHARGER_BLOCK.get(), ENDER_CHARGER_BLOCK.get()).build(null));
 
     //Container
     public static final RegistryObject<ContainerType<BatteryContainer>> BATTERY_CONTAINER = CONTAINERS.register("battery_container", () -> IForgeContainerType.create(((windowId, inv, data) -> new BatteryContainer(windowId, inv, inv.player))));
@@ -108,7 +111,7 @@ public class BatteriesMod
         ScreenManager.registerFactory(BATTERY_CONTAINER.get(), BatteryScreen::new);
 
         //Network Registry
-        GuiPacketHandler.setup();
+        PacketHandler.setup();
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
