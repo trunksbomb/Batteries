@@ -1,5 +1,5 @@
 {
-  "parent": "batteries:block/charger_empty",
+  "parent": "batteries:block/charger/charger_none",
   "textures": {
     "north": "batteries:blocks/charger/charger_elite",
     "south": "batteries:blocks/charger/charger_elite"

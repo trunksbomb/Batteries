@@ -57,17 +57,11 @@ public class ChargerTile extends TileEntity implements ITickableTileEntity {
           for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             ItemStack stack = player.inventory.getStackInSlot(i);
             if (stack.getOrCreateTag().hasUniqueId("uuid") && stack.getOrCreateTag().getUniqueId("uuid").equals(this.linkedBatteryUuid)) {
-              System.out.printf("%s: Found battery %s%n", world.isRemote ? "Client" : "Server", stack.getOrCreateTag().getUniqueId("uuid"));
               return stack.getCapability(cap);
             }
           }
-          System.out.printf("%s: Cannot find battery %s%n", world.isRemote ? "Client" : "Server", this.linkedBatteryUuid);
         }
-        else
-          System.out.printf("Player was null%n");
       }
-      else
-        System.out.printf("Invalid cap search.. %s and %s%n", this.linkedBatteryUuid, this.linkedPlayerUuid);
     }
     return super.getCapability(cap, side);
   }

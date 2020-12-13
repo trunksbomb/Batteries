@@ -1,0 +1,214 @@
+{
+  "variants": {
+    "battery=none,facing=north,type=normal": {
+      "model": "batteries:block/charger/ender_charger"
+    },
+    "battery=basic,facing=north,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=advanced,facing=north,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=elite,facing=north,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=ultimate,facing=north,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=creative,facing=north,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=ender,facing=north,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=none,facing=south,type=normal": {
+      "model": "batteries:block/charger/ender_charger",
+      "y": 180
+    },
+    "battery=basic,facing=south,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=advanced,facing=south,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=elite,facing=south,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=ultimate,facing=south,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=creative,facing=south,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=ender,facing=south,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=none,facing=west,type=normal": {
+      "model": "batteries:block/charger/ender_charger",
+      "y": 270
+    },
+    "battery=basic,facing=west,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=advanced,facing=west,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=elite,facing=west,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=ultimate,facing=west,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=creative,facing=west,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=ender,facing=west,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=none,facing=east,type=normal": {
+      "model": "batteries:block/charger/ender_charger",
+      "y": 90
+    },
+    "battery=basic,facing=east,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=advanced,facing=east,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=elite,facing=east,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=ultimate,facing=east,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=creative,facing=east,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=ender,facing=east,type=normal": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=none,facing=north,type=ender": {
+      "model": "batteries:block/charger/ender_charger"
+    },
+    "battery=basic,facing=north,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=advanced,facing=north,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=elite,facing=north,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=ultimate,facing=north,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=creative,facing=north,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=ender,facing=north,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full"
+    },
+    "battery=none,facing=south,type=ender": {
+      "model": "batteries:block/charger/ender_charger",
+      "y": 180
+    },
+    "battery=basic,facing=south,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=advanced,facing=south,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=elite,facing=south,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=ultimate,facing=south,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=creative,facing=south,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=ender,facing=south,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 180
+    },
+    "battery=none,facing=west,type=ender": {
+      "model": "batteries:block/charger/ender_charger",
+      "y": 270
+    },
+    "battery=basic,facing=west,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=advanced,facing=west,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=elite,facing=west,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=ultimate,facing=west,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=creative,facing=west,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=ender,facing=west,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 270
+    },
+    "battery=none,facing=east,type=ender": {
+      "model": "batteries:block/charger/ender_charger",
+      "y": 90
+    },
+    "battery=basic,facing=east,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=advanced,facing=east,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=elite,facing=east,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=ultimate,facing=east,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=creative,facing=east,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    },
+    "battery=ender,facing=east,type=ender": {
+      "model": "batteries:block/charger/ender_charger_full",
+      "y": 90
+    }
+  }
+}
