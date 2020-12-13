@@ -28,3 +28,4 @@ mcmodsrepo
 *.log
 .gitattributes
 gradle-wrapper*
+/src/generated/resources/.cache/cache
