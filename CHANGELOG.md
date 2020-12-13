@@ -1,13 +1,13 @@
 # Changelog
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [1.3.0] - 2012-12-13
+## [1.3.0] - 2020-12-13
 ### Added
  - New Ender Battery Uplink Block and Ender Battery. Ender Battery has the same capacity as the Ultimate Battery, but can be used on an Ender Battery Uplink to link the two together. Any energy received by the Uplink will be sent to the linked Ender Battery, if they're both loaded.
-## [1.2.2] - 2012-12-09
+## [1.2.2] - 2020-12-09
 ### Fixed
  - Fixed missing translation string for Charger block
-## [1.2.1] - 2012-12-09
+## [1.2.1] - 2020-12-09
 ### Fixed
  - Added missing drop table to Charger so it will drop itself and any battery in it
  - Added missing recipe for Charger
