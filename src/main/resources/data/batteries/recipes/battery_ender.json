@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "rgr",
+    "bib",
+    "rgr"
+  ],
+  "key": {
+    "r": {
+      "item": "minecraft:end_stone"
+    },
+    "g": {
+      "item": "minecraft:diamond_block"
+    },
+    "i": {
+      "item": "batteries:battery3"
+    },
+    "b": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "result": {
+    "item": "batteries:battery_ender",
+    "count": 1
+  }
+}
