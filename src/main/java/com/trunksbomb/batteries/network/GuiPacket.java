@@ -37,7 +37,7 @@ public class GuiPacket {
 
   public static GuiPacket decode(PacketBuffer buffer) {
     GuiPacket packet = new GuiPacket();
-    packet.nbtName = buffer.readString();
+    packet.nbtName = buffer.readString(32767);
     packet.nbtValue = buffer.readBoolean();
     return packet;
   }

@@ -107,16 +107,14 @@ public class BatteriesMod
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        // some preinit code
-        ScreenManager.registerFactory(BATTERY_CONTAINER.get(), BatteryScreen::new);
-
         //Network Registry
         PacketHandler.setup();
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
-        // do something that can only be done on the client
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+    private void doClientStuff(final FMLClientSetupEvent event) 
+    {
+      // some preinit code
+      ScreenManager.registerFactory(BATTERY_CONTAINER.get(), BatteryScreen::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
